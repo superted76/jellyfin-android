@@ -1,6 +1,7 @@
 package org.jellyfin.mobile.ui.screens.connect
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,6 +23,7 @@ import org.jellyfin.mobile.MainViewModel
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.events.ActivityEvent
 import org.jellyfin.mobile.events.ActivityEventHandler
+import org.jellyfin.mobile.ui.background.AnimatedSpaceBackground
 import org.jellyfin.mobile.ui.utils.CenterRow
 import org.koin.compose.koinInject
 
@@ -32,12 +34,14 @@ fun ConnectScreen(
     activityEventHandler: ActivityEventHandler = koinInject(),
 ) {
     Surface(color = MaterialTheme.colors.background) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .systemBarsPadding()
-                .padding(horizontal = 16.dp),
-        ) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            AnimatedSpaceBackground()
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .systemBarsPadding()
+                    .padding(horizontal = 16.dp),
+            ) {
             LogoHeader()
             ServerSelection(
                 showExternalConnectionError = showExternalConnectionError,
@@ -49,6 +53,7 @@ fun ConnectScreen(
                 onClick = { activityEventHandler.emit(ActivityEvent.OpenDownloads) },
                 text = stringResource(R.string.view_downloads),
             )
+            }
         }
     }
 }

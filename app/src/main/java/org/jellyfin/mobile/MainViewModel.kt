@@ -39,8 +39,18 @@ class MainViewModel(
         refreshUser()
     }
 
+    companion object {
+        // Orion Media: default server baked in so the app auto-connects on first launch.
+        const val DEFAULT_SERVER_URL = "https://nas.bobbycloudserver.me"
+    }
+
     private suspend fun refreshServer() {
-        val serverEntity = apiClientController.loadSavedServer()
+        var serverEntity = apiClientController.loadSavedServer()
+        if (serverEntity == null) {
+            // First launch (or no saved server): auto-add the baked-in default server.
+            apiClientController.setupServer(DEFAULT_SERVER_URL)
+            serverEntity = apiClientController.loadSavedServer()
+        }
         _serverState.value = serverEntity?.let { entity -> ServerState.Available(entity) } ?: ServerState.Unset
     }
 
